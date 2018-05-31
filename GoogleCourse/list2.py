@@ -63,19 +63,19 @@ def linear_merge(list1, list2):
     if len(list1) == 0: return list2
     if len(list2) == 0: return list1
 
-    list1.reverse()
-    list2.reverse()
-
     result = []
     from1 = list1.pop(-1)
     from2 = list2.pop(-1)
 
     while True:
-        if from1 <= from2:
+        if from1 >= from2:
             result.append(from1)
             if len(list1) == 0:
                 result.append(from2)
-                result.extend(list2)
+                if len(list2):
+                    list2.reverse()
+                    result.extend(list2)
+                result.reverse()
                 return result
             from1 = list1.pop(-1)
 
@@ -83,7 +83,10 @@ def linear_merge(list1, list2):
             result.append(from2)
             if len(list2) == 0:
                 result.append(from1)
-                result.extend(list1)
+                if len(list1):
+                    list1.reverse()
+                    result.extend(list1)
+                result.reverse()
                 return result
             from2 = list2.pop(-1)
 
@@ -106,7 +109,7 @@ def test_remove_adjacent(in_list, expected):
 
 
 def test_linear_merge(list1, list2, expected):
-    # print '      list1=%s list2=%s' % (repr(list1), repr(list2))
+    print
     print 'list1=', list1
     print 'list2=', list2
 
@@ -141,14 +144,14 @@ def main():
     test_linear_merge(['aa', 'aa'], ['aa', 'bb', 'bb'],
                       ['aa', 'aa', 'aa', 'bb', 'bb'])
 
-    test_linear_merge(['aa', 'bb', 'cc'], ['xx', 'yy' 'zz'],
-                      ['aa', 'bb', 'cc', 'xx', 'yy' 'zz'])
+    test_linear_merge(['aa', 'bb', 'cc'], ['xx', 'yy', 'zz'],
+                      ['aa', 'bb', 'cc', 'xx', 'yy', 'zz'])
     test_linear_merge(['xx', 'yy' 'zz'], ['aa', 'bb', 'cc'],
                       ['aa', 'bb', 'cc', 'xx', 'yy' 'zz'])
 
     test_linear_merge([], [], [])
-    test_linear_merge([], ['aa', 'bb' 'cc'], ['aa', 'bb' 'cc'])
-    test_linear_merge(['aa', 'bb' 'cc'], [], ['aa', 'bb' 'cc'])
+    test_linear_merge([], ['aa', 'bb', 'cc'], ['aa', 'bb', 'cc'])
+    test_linear_merge(['aa', 'bb', 'cc'], [], ['aa', 'bb', 'cc'])
 
 
 if __name__ == '__main__':
