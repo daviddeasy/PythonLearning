@@ -11,6 +11,8 @@ import re
 import sys
 import urllib
 import urlparse
+# from copyspecial import maybe_create_dir
+import copyspecial
 
 """Logpuzzle exercise
 Given an apache logfile, find the puzzle urls and download the images.
@@ -50,15 +52,14 @@ def read_urls(filepath):
     # print 'sorted(puzzle_files)=' + str(sorted(puzzle_files))
     # print 'len(puzzle_files)=' + str(len(puzzle_files))
 
-    urls = ['http://%s:%s' % (hostname, f) for f in sorted(puzzle_files)]
-
-    for url in urls:
-        print url
-
     # ranked_names = []
     # for match_hostname in puzzle_file_matches:
     #     ranked_names.append((match_hostname[0], match_hostname[1], match_hostname[2]))
     # ranked_names = [(match_hostname[0], match_hostname[1], match_hostname[2]) for match_hostname in puzzle_file_matches]
+
+    urls = ['http://%s:%s' % (hostname, f) for f in sorted(puzzle_files)]
+
+    return urls
 
 
 def download_images(img_urls, dest_dir):
@@ -69,7 +70,40 @@ def download_images(img_urls, dest_dir):
     with an img tag to show each local image file.
     Creates the directory if necessary.
     """
-    # +++your code here+++
+
+    html_file_start = \
+        '<!DOCTYPE html>\n' \
+        '<html>\n' \
+        '<body>\n'
+
+    print 'html_file_start=' + str(html_file_start)
+
+    html_file_end = \
+        '</body>\n' \
+        '</html>\n'
+
+    i = 0
+    filenames = []
+    for url in img_urls:
+        filename = 'img%.3d' % i
+        filenames.append(filename)
+        i += 1
+
+        filepath = os.path.join(dest_dir, filename)
+        # print 'SKIPPING URL DOWNLOADS'
+        urllib.urlretrieve(url, filepath)
+        print 'filepath=' + str(filepath)
+        print 'url=' + str(url)
+
+    # <img src="file.jpg">
+
+    index_file = os.path.join(dest_dir, 'index.html')
+    print 'index_file=' + str(index_file)
+    f = open(index_file, 'w')
+    f.write(html_file_start)
+    for filename in filenames:
+        f.write('<img src="%s">\n' % filename)
+    f.write(html_file_end)
 
 
 def main():
@@ -87,9 +121,10 @@ def main():
     img_urls = read_urls(args[0])
 
     if todir:
+        copyspecial.maybe_create_dir(todir)
         download_images(img_urls, todir)
-    # else:
-        # print '\n'.join(img_urls)
+    else:
+        print '\n'.join(img_urls)
 
 
 if __name__ == '__main__':
