@@ -13,11 +13,11 @@ import urllib
 from copyspecial import maybe_create_dir
 
 HTML_FILE_END = '</body>\n' \
-    '</html>\n'
+                '</html>\n'
 
 HTML_FILE_START = '<!DOCTYPE html>\n' \
-                '<html>\n' \
-                '<body>\n'
+                  '<html>\n' \
+                  '<body>\n'
 
 """Logpuzzle exercise
 Given an apache logfile, find the puzzle urls and download the images.
@@ -64,8 +64,10 @@ def extract_image_filenames_from_log(logfile):
 def url_sort_key(filename):
     """Sort by the last word in filename (YYY) if like -XXX-YYY.jpg, else sort by filename"""
     match = re.search(r'-\w+-(\w+).jpg', filename)
-    if match: return match.group(1)
-    else: return filename
+    if match:
+        return match.group(1)
+    else:
+        return filename
 
 
 def download_images(img_urls, dest_dir):
