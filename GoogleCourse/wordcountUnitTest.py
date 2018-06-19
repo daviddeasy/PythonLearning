@@ -5,14 +5,13 @@ unique_words        = ['apple', 'banana', 'cucumber']
 more_unique_words   = ['date', 'gooseberry', 'lemon']
 
 
-# noinspection PyMethodMayBeStatic
+# noinspection PyMethodMayBeStatic,SpellCheckingInspection
 class WordCountTest(unittest.TestCase):
-
-    wordcounts_dict = {}
 
     def setUp(self):
         self.wordcounts_dict = {}
 
+    # Unique words
 
     def test_counts_unique_words(self):
 
@@ -20,7 +19,6 @@ class WordCountTest(unittest.TestCase):
 
         self.verify_keys_are_exactly(unique_words)
         self.verify_all_counts(unique_words, 1)
-
 
     def test_adds_more_unique_words(self):
 
@@ -31,6 +29,7 @@ class WordCountTest(unittest.TestCase):
         self.verify_keys_are_exactly(unique_words + more_unique_words)
         self.verify_all_counts(unique_words + more_unique_words, 1)
 
+    # Repeated words
 
     def test_counts_repeated_words(self):
 
@@ -42,7 +41,6 @@ class WordCountTest(unittest.TestCase):
         self.verify_all_counts(unique_words, 3)
         self.verify_all_counts(more_unique_words, 2)
 
-
     def test_one_repeating_word(self):
 
         word = unique_words[0]
@@ -51,11 +49,11 @@ class WordCountTest(unittest.TestCase):
         self.verify_keys_are_exactly({word})
         self.verify_all_counts({word}, 5)
 
+    # Counts lowercase of words
 
     def test_converts_wordlist_to_lowercase(self):
 
         self.assertEqual(['apple', 'banana', 'pear'], wordcount.tolower(['APPLE', 'Banana', 'pear']))
-
 
     def test_counts_lowercase_of_unique_words_in_a_line(self):
 
@@ -68,7 +66,7 @@ class WordCountTest(unittest.TestCase):
 
     def test_counts_lowercase_of_repeated_words_in_a_line(self):
 
-        line_of_repeated_words = self.space_separated_uppercase_string_from(unique_words + unique_words)
+        line_of_repeated_words = self.space_separated_uppercase_string_from(unique_words * 2)
 
         wordcount.count_lowercase_words(self.wordcounts_dict, line_of_repeated_words)
 
@@ -81,6 +79,7 @@ class WordCountTest(unittest.TestCase):
         line += ' '
         return line
 
+    # Strips trailing punctuation
 
     def test_strips_trailing_comma(self):
         self.strips_trailing_punctuation(',')
@@ -95,6 +94,7 @@ class WordCountTest(unittest.TestCase):
         expected = 'hello'
         self.assertEqual(expected, wordcount.strip_trailing_punct_from(expected + punct))
 
+    # Does not strip other punctuation (non-trailing)
 
     def test_does_not_strip_middle_hyphen(self):
         self.strip_trailing_punct_does_not_change('see-saw')
@@ -111,10 +111,10 @@ class WordCountTest(unittest.TestCase):
     def strip_trailing_punct_does_not_change(self, s):
         self.assertEqual(s, wordcount.strip_trailing_punct_from(s))
 
+    # Support functions
 
     def set_up_dict_with(self, words, count):
         for word in words: self.wordcounts_dict[word] = count
-
 
     def verify_keys_are_exactly(self, keys):
         self.verify_num_keys(len(keys))
@@ -129,7 +129,6 @@ class WordCountTest(unittest.TestCase):
     def verify_all_counts(self, keys, count):
         for word in keys:
             self.assertEqual(count, self.wordcounts_dict[word])
-
 
 
 if __name__ == '__main__':

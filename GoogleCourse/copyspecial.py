@@ -37,6 +37,7 @@ def parse_args():
     if not args:
         print "usage: [--todir dir][--tozip zipfile] dir [dir ...]"
         sys.exit(1)
+
     # todir and tozip are either set from command line or left as the empty string.
     # The args array is left just containing the dirs.
     todir = ''
@@ -50,6 +51,7 @@ def parse_args():
     if len(args) == 0:
         print 'ERROR: Must specify at least one directory to copy from'
         sys.exit(1)
+
     return args, todir, tozip
 
 

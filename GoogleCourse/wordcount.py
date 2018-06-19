@@ -147,7 +147,7 @@ def strip_trailing_punctuation_in(wordlist):
 def strip_trailing_punct_from(word):
     # return word.translate(None, string.punctuation)
 
-    i_last_letter = len(word) -1
+    i_last_letter = len(word) - 1
 
     while i_last_letter >= 0 and word[i_last_letter] in string.punctuation:
         i_last_letter -= 1
@@ -163,6 +163,7 @@ def count_words(wordcounts_dict, wordlist):
             wordcounts_dict[word] = wordcounts_dict[word] + 1
         else:
             wordcounts_dict[word] = 1
+
 
 ###
 

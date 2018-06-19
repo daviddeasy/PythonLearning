@@ -101,11 +101,11 @@ def download_images_urls(dest_dir, filenames, img_urls):
 def generate_index_file(dest_dir, filenames):
     index_file = os.path.join(dest_dir, 'index.html')
     print 'index_file=' + str(index_file)
-    f = open(index_file, 'w')
-    f.write(HTML_FILE_START)
-    for filename in filenames:
-        f.write('<img src="%s">' % filename)
-    f.write(HTML_FILE_END)
+    with open(index_file, 'w') as f:
+        f.write(HTML_FILE_START)
+        for filename in filenames:
+            f.write('<img src="%s">' % filename)
+        f.write(HTML_FILE_END)
 
 
 def main():
